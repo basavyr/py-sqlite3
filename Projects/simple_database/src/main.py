@@ -89,11 +89,35 @@ class DB:
 
         db_conn.close()
 
+    def selectData(self):
+        db_object = self.createConnection()
+
+        if(db_object["status"] == -1):
+            print('Issue with the database connection')
+            return
+
+        db_conn = db_object["conn"]
+
+        cursor = db_conn.cursor()
+
+        selected_data = cursor.execute(
+            f'''SELECT * FROM {self.tableName} WHERE size = 7''')
+
+        # print(selected_data)
+
+        my_data = selected_data.fetchall()
+        for data in my_data:
+            print(data)
+
+        # db_conn.commit()
+        db_conn.close()
+
 
 def main():
     local_db = DB('test_DataBae.db', 'Arrays')
     data = generateArrays(10)
     local_db.addData(data)
+    local_db.selectData()
 
 
 if __name__ == "__main__":
