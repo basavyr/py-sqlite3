@@ -6,10 +6,20 @@ from timeit import default_timer
 
 import sqlite3 as db
 
+from random import randrange
+
 
 def average(array):
     summ = sum(array)
-    return float(summ / len(array))
+    return round(float(summ / len(array)), 3)
+
+
+def generateArrays(n_arrays):
+    ret_arrays = []
+    for idx in range(n_arrays):
+        idx_array = [randrange(0, 100) for _ in range(randrange(1, 10))]
+        ret_arrays.append(idx_array)
+    return ret_arrays
 
 
 class DB:
@@ -66,25 +76,23 @@ class DB:
     def addData(self, data):
         db_object = self.createTable()
 
-        # prepare the data that will be added in the table
-        data = data[0]
-        avg = average(data)
-
         # open the database connection
         db_conn = db_object["conn"]
         # initialize the cursor
         cursor = db_conn.cursor()
 
-        for _ in range(3):
+        for data_idx in data:
             cursor.execute(
-                f'INSERT INTO {self.tableName} VALUES (\f\'{data}\',{len(data)},{avg})')
+                f'INSERT INTO {self.tableName} VALUES (\f\'{data_idx}\',{len(data_idx)},{average(data_idx)})')
+
         db_conn.commit()
+
         db_conn.close()
 
 
 def main():
     local_db = DB('test_DataBae.db', 'Arrays')
-    data = [[1, 2, 3] for _ in range(3)]
+    data = generateArrays(10)
     local_db.addData(data)
 
 
