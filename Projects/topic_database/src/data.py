@@ -36,12 +36,12 @@ class Data:
         return data_sets
 
 
-def main():
-    data = Data()
-    arrays = data.GiveData()
-    for arr in arrays:
-        print(arr)
+# def main():
+#     data = Data()
+#     arrays = data.GiveData()
+#     for arr in arrays:
+#         print(arr)
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
