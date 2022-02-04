@@ -46,12 +46,18 @@ class DB:
 
         db_conn = db_object["conn"]
 
-        
+        # create a cursors object that can execute SQL commands
+        cursor = db_conn.cursor()
+
+        # perform the creation of the actual table
+        cursor.execute(f''' CREATE TABLE IF NOT EXISTS {table_name}
+                            (array str, size int,average float)''')
+        db_conn.commit()
 
 
 def main():
     local_db = DB('test_DataBae.db')
-    local_db.createTable('arrays')
+    local_db.createTable('Arrays')
 
 
 if __name__ == "__main__":
