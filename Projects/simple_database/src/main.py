@@ -100,11 +100,11 @@ class DB:
 
         cursor = db_conn.cursor()
 
+        # this retrieves all the entries within the database that correspond to the query
         selected_data = cursor.execute(
             f'''SELECT * FROM {self.tableName} WHERE size = 7''')
 
-        # print(selected_data)
-
+        # this fetches the selected data and makes it avaliable to python as an object
         my_data = selected_data.fetchall()
         for data in my_data:
             print(data)
@@ -112,12 +112,24 @@ class DB:
         # db_conn.commit()
         db_conn.close()
 
+    def getDBsize(self):
+        db_object = self.createConnection()
+        db_conn = db_object["conn"]
+
+        cursor = db_conn.cursor()
+
+        db_size = len(cursor.execute(
+            f'SELECT * FROM {self.tableName}').fetchall())
+
+        print(db_size)
+
 
 def main():
     local_db = DB('test_DataBae.db', 'Arrays')
     data = generateArrays(10)
-    local_db.addData(data)
-    local_db.selectData()
+    local_db.getDBsize()
+    # local_db.addData(data)
+    # local_db.selectData()
 
 
 if __name__ == "__main__":
