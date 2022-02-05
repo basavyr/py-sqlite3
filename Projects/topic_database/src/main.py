@@ -18,6 +18,18 @@ def getTopic():
     return f'Bishu1'
 
 
+def getNumberOfMessages():
+    """
+    - sets the number of messages to be pulled to a predefined constant value
+    """
+    pulling_messages = 100
+    return pulling_messages
+
+
+def set_database_name(topic):
+    return f'{topic}_data.db'
+
+
 class DB:
     DataStorePath = '../db/'
     db_proper_path = lambda db_file: f'{DB.DataStorePath}{db_file}'
@@ -59,7 +71,7 @@ class DB:
 
         cursor = conn.cursor()
 
-        cursor.execute(f'''CREATE TABLE {table_name}
+        cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table_name}
                             (msg_id int, msg str, msg_size int, msg_avg float, timestamp str)''')
 
         # commit changes
@@ -68,12 +80,21 @@ class DB:
         # close the connection
         conn.close()
 
+    def pullData(self):
+        """
+        - method used for pulling a set of messages using the messager class
+        - the list of messages (actual data) is represented by an array of randomly generated arrays and some specific objects attached to them
+        - the number of messages is set from the class initialization
+        """
+
 
 def main():
     table_name = getTopic()
+    number_of_messages = getNumberOfMessages()
+    database_name = set_database_name(getTopic())
 
-    db = DB('topic_data.db')
-    db.createTable(db.dbName, table_name)
+    db = DB(database_name)
+    db.createTable(database_name, table_name)
 
 
 if __name__ == '__main__':
