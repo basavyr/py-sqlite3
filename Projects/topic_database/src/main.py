@@ -58,8 +58,10 @@ class DB:
             return 1
         return -1
 
-    def dataInserter(self, cursor, data):
-        return data
+    def dataInserter(self, cursor, ins_data):
+        for data_element in ins_data:
+            stringified_data = messages.Message.stringifyDM(data_element)
+            print(stringified_data)
 
     def createTable(self, db_file, table_name):
         try:
@@ -120,6 +122,8 @@ def main():
     messages = db.pullMessages()
 
     cursor = db.getCursor(database_name)
+
+    db.dataInserter(cursor, messages)
 
 
 if __name__ == '__main__':
