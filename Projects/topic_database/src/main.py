@@ -58,13 +58,20 @@ class DB:
             return 1
         return -1
 
-    def dataInserter(self, table_name, cursor, ins_data):
-        for data_element in ins_data:
+    def insertData(self, db_file, table_name, message_data):
+        conn = self.createConnection(db_file)
+        cursor = conn.cursor()
+        for data_element in message_data:
             stringified_data = messages.Message.stringifyDM(data_element)
-            print(stringified_data)
-            # print(data_element)
-            # cursor.execute(f'''INSERT INTO {table_name} VALUES
-            #                     ''')
+            stringified_data_id = (
+                1, stringified_data[0], stringified_data[1], stringified_data[2], stringified_data[3])
+            print(stringified_data_id)
+            cursor.execute(
+                f'INSERT INTO {table_name} VALUES (?,?,?,?,?)', stringified_data_id)
+
+        conn.commit()
+
+        conn.close()
 
     def createTable(self, db_file, table_name):
         try:
@@ -77,8 +84,9 @@ class DB:
 
         cursor = conn.cursor()
 
+        # temporary chain to string for the entire database
         cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table_name}
-                            (msg_id int, msg str, msg_size int, msg_avg float, timestamp str)''')
+                            (msg_id int, msg str, msg_size str, msg_avg str, timestamp str)''')
 
         # commit changes
         conn.commit()
@@ -95,7 +103,7 @@ class DB:
 
         return cursor
 
-    def pullMessages(self):
+    def pullData(self):
         """
         - method used for pulling a set of messages using the messager class
         - the pulled messages will be used within the database
@@ -122,11 +130,11 @@ def main():
     db = DB(database_name)
     db.createTable(database_name, table_name)
 
-    messages = db.pullMessages()
+    messages = db.pullData()
 
     cursor = db.getCursor(database_name)
 
-    db.dataInserter(table_name, cursor, messages)
+    db.insertData(database_name, table_name, messages)
 
 
 if __name__ == '__main__':
