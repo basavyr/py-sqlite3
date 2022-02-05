@@ -3,7 +3,7 @@ from random import uniform, randrange
 
 class Data:
     DEFAULT_SEED = 1
-    N_DATA_SETS = 100
+    N_DATA_SETS = 10
 
     def __init__(self):
         self.seed = Data.DEFAULT_SEED
@@ -25,8 +25,10 @@ class Data:
         return rd_arr
 
     def GiveData(self):
-        # declare an emptry array which will be updated with a bunch of random arrays
-        # the number of random arrays within the data is given by the n argument
+        """
+        - declare an emptry array which will be updated with a bunch of random arrays
+        - the number of random arrays within the data is given by the n argument
+        """
         data_sets = []
 
         for idx in range(self.N_DATA_SETS):
@@ -34,14 +36,3 @@ class Data:
             data_sets.append(arr_idx)
 
         return data_sets
-
-
-# def main():
-#     data = Data()
-#     arrays = data.GiveData()
-#     for arr in arrays:
-#         print(arr)
-
-
-# if __name__ == '__main__':
-#     main()
