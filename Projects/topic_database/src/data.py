@@ -6,19 +6,21 @@ class Data:
     - generate random data as a list of arrays
     - Predefined values:
         * seed
-        * number of random arrays within the final list of random data
+        * number of random arrays within the final list of random data -> N_RANDOM_ARRAYS
         * the smallest possible length for an (individual/component) array 
         * the largest possbile length for an array
     """
 
     DEFAULT_SEED = 1
-    N_DATA_SETS = 10
+    N_RANDOM_ARRAYS = 10
+    LEFT_LIMIT = 1
+    RIGHT_LIMIT = 10
 
     def __init__(self):
         self.seed = Data.DEFAULT_SEED
-        self.left_limit = 1
-        self.right_limit = 10
-        self.dataSets = Data.N_DATA_SETS
+        self.left_limit = Data.LEFT_LIMIT
+        self.right_limit = Data.RIGHT_LIMIT
+        self.dataSets = Data.N_RANDOM_ARRAYS
 
     def CreateRandomArray(self):
         """
@@ -27,20 +29,21 @@ class Data:
         - elements are confined within [-seed, seed] interval 
         - size of the array is given by a random integer 
         """
-        give_rd_number = lambda: uniform(-self.seed, self.seed)
-        rd_arr_size = randrange(self.left_limit, self.right_limit)
-        rd_arr = [give_rd_number() for _ in range(rd_arr_size)]
 
-        return rd_arr
+        rd_number = lambda: uniform(-self.seed, self.seed)
+        rd_array_size = randrange(self.left_limit, self.right_limit)
+        rd_array = [rd_number() for _ in range(rd_array_size)]
+
+        return rd_array
 
     def GiveRandomData(self):
         """
-        - declare an emptry array which will be updated with a bunch of random arrays
-        - the number of random arrays within the data is given by the n argument
+        - Returns a bunch of random arrays (fixed number of arrays to be added within the final list)
+        - the number of random arrays within the output data is given by the N_RANDOM_ARRAYS argument
         """
         random_data = []
 
-        for _ in range(self.N_DATA_SETS):
+        for data_idx in range(self.dataSets):
             rd_array = self.CreateRandomArray()
             random_data.append(rd_array)
 

@@ -8,7 +8,8 @@ from timeit import default_timer
 
 from random import randrange
 
-import messages as dms
+import messages as messages
+import data as data
 
 
 def getTopic():
@@ -87,6 +88,14 @@ class DB:
         - the number of messages is set from the class initialization
         """
 
+        # generate the random data
+        data_object = data.Data()
+        random_data = data_object.GiveRandomData()
+
+        # integrate the randomly generated data into messages
+        dms = messages.Message(random_data)
+        public_msgs = dms.CreateMessages()
+
 
 def main():
     table_name = getTopic()
@@ -95,6 +104,7 @@ def main():
 
     db = DB(database_name)
     db.createTable(database_name, table_name)
+    db.pullData()
 
 
 if __name__ == '__main__':
