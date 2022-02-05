@@ -18,10 +18,7 @@ class Message:
         - each element will be stringified, then appended to a new list
         - the newly obtained list will be printed
         """
-        str_dm = []
-        for item in dm:
-            str_item = str(item)
-            str_dm.append(str_item)
+        str_dm = tuple(map(str, dm))
         return str_dm
 
     @staticmethod
@@ -36,7 +33,8 @@ class Message:
         # storing the datetime as a string will prevent the different output when manipulating the message list
         rd_arr_timestamp = str(datetime.utcnow())
 
-        msg = [rd_array, rd_arr_size, rd_arr_avg, rd_arr_timestamp]
+        # the message must be a TUPLE and not a list
+        msg = (rd_array, rd_arr_size, rd_arr_avg, rd_arr_timestamp)
 
         return msg
 
@@ -56,7 +54,8 @@ class Message:
         # storing the datetime as a string will prevent the different output when manipulating the message list
         rd_arr_timestamp = str(datetime.utcnow())
 
-        msg = [rd_array, rd_arr_size, rd_arr_avg, rd_arr_timestamp]
+        # the message must be a TUPLE and not a list
+        msg = (rd_array, rd_arr_size, rd_arr_avg, rd_arr_timestamp)
 
         return msg
 
