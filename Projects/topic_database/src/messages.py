@@ -5,18 +5,31 @@ from datetime import datetime
 
 class Message:
     def __init__(self, data):
-        self.rd_data = data
+        """
+        - initialize the class with a list of random arrays
+        - argument data is representing the list of random arrays
+        """
+        self.rd_arrays = data
 
     @staticmethod
     def stringifyDM(dm):
-        return str(dm)
-
-    @staticmethod
-    def destringifyDM(dm):
-        return dm
+        """
+        - transform every element within a list of messages to a string
+        - the `dm` argument represents a list of elements
+        - each element will be stringified, then appended to a new list
+        - the newly obtained list will be printed
+        """
+        str_dm = []
+        for item in dm:
+            str_item = str(item)
+            str_dm.append(str_item)
+        return str_dm
 
     @staticmethod
     def CreateMessageStatic(rd_array):
+        """
+        - the static version of CreateMessage class method
+        """
         msg = rd_array
         msg_avg = round(float(sum(rd_array) / len(rd_array)), 3)
         msg_size = len(rd_array)
@@ -26,6 +39,14 @@ class Message:
         return [msg, msg_size, msg_avg, timestamp]
 
     def CreateMessage(self, rd_array):
+        """
+        - returns a list of objects containing:
+            * an array of random elements
+            * the size of the array 
+            * the average value of the array
+            * a timestamp representing the time at which the message was generated
+            * entire collection of objects defined above are embedded in a so-called MESSAGE
+        """
         msg = rd_array
         msg_avg = round(float(sum(rd_array) / len(rd_array)), 3)
         msg_size = len(rd_array)
@@ -37,10 +58,14 @@ class Message:
         return [msg, msg_size, msg_avg, timestamp]
 
     def CreateMessages(self):
+        """
+        - the method takes a list of arrays that are randomly generated (via another class) and embeds them into messages that are saved in memory
+        - the messages are composed of several objects, and each message that is generated from its corresponding array is stored in the `msgs` object => representing the resulting list of messages
+        """
         msgs = []
-        for rd_data in self.rd_data:
-            msg_object = self.CreateMessage(rd_data)
-            msgs.append(msg_object)
+        for rd_array in self.rd_arrays:
+            msg = self.CreateMessage(rd_array)
+            msgs.append(msg)
         return msgs
 
 
@@ -50,8 +75,6 @@ def main():
 
     dms = Message(rd_arrays)
     msgs = dms.CreateMessages()
-    for msg in msgs:
-        print(msg)
 
 
 if __name__ == '__main__':
