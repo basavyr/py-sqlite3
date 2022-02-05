@@ -81,9 +81,19 @@ class DB:
         # close the connection
         conn.close()
 
-    def pullData(self):
+    def getCursor(self, db_file):
+        # establish the connection with the database
+        conn = self.createConnection(db_file)
+
+        # create the cursor
+        cursor = conn.cursor()
+
+        return cursor
+
+    def pullMessages(self):
         """
         - method used for pulling a set of messages using the messager class
+        - the pulled messages will be used within the database
         - the list of messages (actual data) is represented by an array of randomly generated arrays and some specific objects attached to them
         - the number of messages is set from the class initialization
         """
@@ -96,6 +106,8 @@ class DB:
         dms = messages.Message(random_data)
         public_msgs = dms.CreateMessages()
 
+        return public_msgs
+
 
 def main():
     table_name = getTopic()
@@ -104,7 +116,10 @@ def main():
 
     db = DB(database_name)
     db.createTable(database_name, table_name)
-    db.pullData()
+
+    messages = db.pullMessages()
+
+    cursor = db.getCursor(database_name)
 
 
 if __name__ == '__main__':
