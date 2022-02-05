@@ -61,21 +61,10 @@ class Message:
         """
         - the method takes a list of arrays that are randomly generated (via another class) and embeds them into messages that are saved in memory
         - the messages are composed of several objects, and each message that is generated from its corresponding array is stored in the `msgs` object => representing the resulting list of messages
+        - the method does not take any arguments since it will take the data that was provided at class initialization
         """
         msgs = []
         for rd_array in self.rd_arrays:
             msg = self.CreateMessage(rd_array)
             msgs.append(msg)
         return msgs
-
-
-def main():
-    rd_data = data.Data()
-    rd_arrays = rd_data.GiveData()
-
-    dms = Message(rd_arrays)
-    msgs = dms.CreateMessages()
-
-
-if __name__ == '__main__':
-    main()

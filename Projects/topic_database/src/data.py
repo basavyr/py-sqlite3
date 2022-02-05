@@ -2,6 +2,15 @@ from random import uniform, randrange
 
 
 class Data:
+    """
+    - generate random data as a list of arrays
+    - Predefined values:
+        * seed
+        * number of random arrays within the final list of random data
+        * the smallest possible length for an (individual/component) array 
+        * the largest possbile length for an array
+    """
+
     DEFAULT_SEED = 1
     N_DATA_SETS = 10
 
@@ -11,28 +20,28 @@ class Data:
         self.right_limit = 10
         self.dataSets = Data.N_DATA_SETS
 
-    def CreateArray(self):
+    def CreateRandomArray(self):
         """
         - generate an array with random elements
         - elements are given from a uniform data distribution
         - elements are confined within [-seed, seed] interval 
         - size of the array is given by a random integer 
         """
-        rd = lambda: uniform(-self.seed, self.seed)
+        give_rd_number = lambda: uniform(-self.seed, self.seed)
         rd_arr_size = randrange(self.left_limit, self.right_limit)
-        rd_arr = [rd() for _ in range(rd_arr_size)]
+        rd_arr = [give_rd_number() for _ in range(rd_arr_size)]
 
         return rd_arr
 
-    def GiveData(self):
+    def GiveRandomData(self):
         """
         - declare an emptry array which will be updated with a bunch of random arrays
         - the number of random arrays within the data is given by the n argument
         """
-        data_sets = []
+        random_data = []
 
-        for idx in range(self.N_DATA_SETS):
-            arr_idx = self.CreateArray()
-            data_sets.append(arr_idx)
+        for _ in range(self.N_DATA_SETS):
+            rd_array = self.CreateRandomArray()
+            random_data.append(rd_array)
 
-        return data_sets
+        return random_data

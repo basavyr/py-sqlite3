@@ -8,8 +8,13 @@ from timeit import default_timer
 
 from random import randrange
 
+import messages as dms
+
 
 def getTopic():
+    """
+    - retrieves the name of a topic on which the client is subscried
+    """
     return f'Bishu1'
 
 
