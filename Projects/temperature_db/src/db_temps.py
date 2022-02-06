@@ -26,21 +26,26 @@ class DB:
 
         return [conn, cursor]
 
-    def GetDBSize(self, database, table_name):
+    def GetDBSize(self, database, table):
         """
         - returns the number of items within the db
         """
         conn, cursor = self.CreateConnectedCursor(database)
 
-        cursor.execute(f'SELECT * FROM {table_name}')
+        content = cursor.execute(f'SELECT * FROM {table}')
 
-    def CreateTable(self, database, table_name):
+        all_data = content.fetchall()
+        db_size = len(all_data)
+
+        return db_size
+
+    def CreateTable(self, database, table):
         conn_tuple = self.CreateConnectedCursor(database)
 
         conn = conn_tuple[0]
         cursor = conn_tuple[1]
 
-        cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table_name}
+        cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table}
                             (temp_id int, temp float,timestamp str, topic str)''')
 
         # commit creation table
