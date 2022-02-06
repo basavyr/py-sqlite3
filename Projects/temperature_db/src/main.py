@@ -31,7 +31,7 @@ def main():
     db = DB.DB()
     db.CreateTable(database, table)
     db.InsertData(temps, database, table)
-    db.SelectData(database, table)
+    db.SelectData(database, table, 'temp_id', 9)
 
 
 if __name__ == '__main__':

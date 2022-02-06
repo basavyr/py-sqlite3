@@ -78,14 +78,16 @@ class DB:
 
         conn.close()
 
-    def SelectData(self, database, table):
+    def SelectData(self, database, table, col_selector, value):
         conn_tuple = self.CreateConnectedCursor(database)
 
         conn = conn_tuple[0]
         cursor = conn_tuple[1]
 
+        t = (value,)
+
         selected_data = cursor.execute(
-            f'SELECT * FROM {table} WHERE temp_id=9')
+            f'SELECT * FROM {table} WHERE {col_selector}=?', t)
         row = selected_data.fetchone()
         print(row)
         conn.commit()
