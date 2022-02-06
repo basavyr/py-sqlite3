@@ -78,7 +78,7 @@ class DB:
 
         conn.close()
 
-    def SelectData(self, database, table, col_selector, value):
+    def SelectDataEqual(self, database, table, col_selector, value):
         conn_tuple = self.CreateConnectedCursor(database)
 
         conn = conn_tuple[0]
@@ -88,7 +88,37 @@ class DB:
 
         selected_data = cursor.execute(
             f'SELECT * FROM {table} WHERE {col_selector}=?', t)
-        row = selected_data.fetchone()
-        print(row)
+        results = selected_data.fetchone()
+        print(results)
         conn.commit()
         conn.close()
+
+    def SelectDataGreater(self, database, table, col_selector, value):
+        conn_tuple = self.CreateConnectedCursor(database)
+
+        conn = conn_tuple[0]
+        cursor = conn_tuple[1]
+
+        t = (value,)
+
+        selected_data = cursor.execute(
+            f'SELECT * FROM {table} WHERE {col_selector}>?', t)
+        rows = selected_data.fetchall()
+
+        for row in rows:
+            print(row)
+
+    def SelectDataSmaller(self, database, table, col_selector, value):
+        conn_tuple = self.CreateConnectedCursor(database)
+
+        conn = conn_tuple[0]
+        cursor = conn_tuple[1]
+
+        t = (value,)
+
+        selected_data = cursor.execute(
+            f'SELECT * FROM {table} WHERE {col_selector}<?', t)
+        rows = selected_data.fetchall()
+
+        for row in rows:
+            print(row)
