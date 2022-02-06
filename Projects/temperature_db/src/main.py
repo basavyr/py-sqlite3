@@ -14,10 +14,10 @@ def getDBname():
 
 
 def main():
-    database_name = getDBname()
+    database = getDBname()
     topic = getTopic()
     # the table name must correspond to the topic
-    table_name = topic
+    table = topic
 
     # generate temperatures
     temps = temp.Room_Temp(20, 5)
@@ -25,7 +25,7 @@ def main():
 
     # create database for storing the temps
     db = DB.DB()
-    db.CreateTable(database_name, table_name)
+    db.CreateTable(database, table)
 
 
 if __name__ == '__main__':

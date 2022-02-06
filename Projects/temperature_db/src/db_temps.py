@@ -2,10 +2,11 @@ import sqlite3
 
 
 class DB:
+    DB_STORAGE_PATH = '../src/'
 
     def CreateConnection(self, database):
         try:
-            conn = sqlite3.connect(database)
+            conn = sqlite3.connect(f'{self.DB_STORAGE_PATH}{database}')
         except sqlite3.Error as err:
             print(
                 f'Issue with creating a connection to the database {database}')
@@ -25,11 +26,28 @@ class DB:
 
         return [conn, cursor]
 
+    def GetDBSize(self, database, table_name):
+        """
+        - returns the number of items within the db
+        """
+        conn, cursor = self.CreateConnectedCursor(database)
+
+        cursor.execute(f'SELECT * FROM {table_name}')
+
     def CreateTable(self, database, table_name):
         conn_tuple = self.CreateConnectedCursor(database)
 
         conn = conn_tuple[0]
         cursor = conn_tuple[1]
 
+        cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table_name}
+                            (temp_id int, temp float,timestamp str, topic str)''')
+
+        # commit creation table
+        conn.commit()
+
         print(f'connection -> {conn}')
         print(f'cursor -> {cursor}')
+
+        # close the connection
+        conn.close()
