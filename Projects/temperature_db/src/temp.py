@@ -1,4 +1,5 @@
 from random import randrange, uniform
+from datetime import datetime
 
 
 class Room_Temp:
@@ -31,3 +32,9 @@ class Room_Temp:
             temps.append(random_temp)
 
         return temps
+
+    @staticmethod
+    def generateDBEntry(idx, temp, topic):
+        temp_tuple = (float(idx), float(temp), str(
+            datetime.utcnow()), str(topic))
+        return temp_tuple

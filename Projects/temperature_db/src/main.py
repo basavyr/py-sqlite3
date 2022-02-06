@@ -29,7 +29,8 @@ def main():
 
     # create database for storing the temps
     db = DB.DB()
-    db.CreateTable(database, table)
+    # db.CreateTable(database, table)
+    db.InsertData(temps, database, table)
 
 
 if __name__ == '__main__':

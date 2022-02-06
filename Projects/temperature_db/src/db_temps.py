@@ -1,5 +1,7 @@
 import sqlite3
 
+import temp as temp
+
 
 class DB:
     DB_STORAGE_PATH = '../src/'
@@ -56,3 +58,17 @@ class DB:
 
         # close the connection
         conn.close()
+
+    def InsertData(self, data, database, table):
+        conn_tuple = self.CreateConnectedCursor(database)
+
+        conn = conn_tuple[0]
+        cursor = conn_tuple[1]
+
+        id0 = self.GetDBSize(database, table)
+
+        for data_element in data:
+            current_message = temp.Room_Temp.generateDBEntry(
+                id0, data_element, table)
+            print(current_message)
+            id0 = id0 + 1
