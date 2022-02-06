@@ -48,13 +48,13 @@ class DB:
         cursor = conn_tuple[1]
 
         cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table}
-                            (temp_id int, temp float,timestamp str, topic str)''')
+                            (temp_id int primary key, temp float,timestamp str, topic str)''')
 
         # commit creation table
         conn.commit()
 
-        print(f'connection -> {conn}')
-        print(f'cursor -> {cursor}')
+        # print(f'connection -> {conn}')
+        # print(f'cursor -> {cursor}')
 
         # close the connection
         conn.close()
@@ -70,5 +70,23 @@ class DB:
         for data_element in data:
             current_message = temp.Room_Temp.generateDBEntry(
                 id0, data_element, table)
-            print(current_message)
+            cursor.execute(
+                f'INSERT INTO {table} VALUES (?,?,?,?)', current_message)
             id0 = id0 + 1
+
+        conn.commit()
+
+        conn.close()
+
+    def SelectData(self, database, table):
+        conn_tuple = self.CreateConnectedCursor(database)
+
+        conn = conn_tuple[0]
+        cursor = conn_tuple[1]
+
+        selected_data = cursor.execute(
+            f'SELECT * FROM {table} WHERE temp_id=9')
+        row = selected_data.fetchone()
+        print(row)
+        conn.commit()
+        conn.close()
