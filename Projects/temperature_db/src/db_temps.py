@@ -4,7 +4,7 @@ import temp as temp
 
 
 class DB:
-    DB_STORAGE_PATH = '../src/'
+    DB_STORAGE_PATH = '../db/'
 
     def CreateConnection(self, database):
         try:
