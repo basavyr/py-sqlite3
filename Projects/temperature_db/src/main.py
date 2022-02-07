@@ -31,9 +31,10 @@ def main():
     db = DB.DB()
     db.CreateTable(database, table)
     db.InsertData(temps, database, table)
-    db.SelectDataEqual(database, table, 'temp_id', 9)
-    db.SelectDataGreater(database, table, 'temp_id', 50)
-    db.SelectDataSmaller(database, table, 'temp_id', 50)
+    # db.SelectDataEqual(database, table, 'temp_id', 9)
+    # db.SelectDataGreater(database, table, 'temp_id', 50)
+    # db.SelectDataSmaller(database, table, 'temp_id', 50)
+    db.SelectDataOrderedBy(database, table, 'temp', 100)
 
 
 if __name__ == '__main__':

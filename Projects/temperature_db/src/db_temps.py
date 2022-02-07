@@ -47,8 +47,14 @@ class DB:
         conn = conn_tuple[0]
         cursor = conn_tuple[1]
 
+        # *****************************************
+        # ********** TABLE STRUCTURE **************
+        # *****************************************
         cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table}
                             (temp_id int primary key, temp float,timestamp str, topic str)''')
+        # *****************************************
+        # *****************************************
+        # *****************************************
 
         # commit creation table
         conn.commit()
@@ -122,3 +128,18 @@ class DB:
 
         for row in rows:
             print(row)
+
+    def SelectDataOrderedBy(self, database, table, col_selector, value):
+        conn_tuple = self.CreateConnectedCursor(database)
+
+        conn = conn_tuple[0]
+        cursor = conn_tuple[1]
+
+        t = (value,)
+
+        selected_data = cursor.execute(
+            f'SELECT * FROM {table} WHERE temp_id>? ORDER BY {col_selector}', t)
+        content = selected_data.fetchall()
+
+        for content_id in content:
+            print(content_id)

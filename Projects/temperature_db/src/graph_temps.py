@@ -1,6 +1,5 @@
-import matplotlib.pyplot as plt
-
 import temp
+import matplotlib.pyplot as plt
 
 
 class Graph:
