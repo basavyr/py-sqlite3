@@ -2,6 +2,11 @@ import sqlite3
 
 import temp as temp
 
+import writer as ww
+
+
+writer_obj = ww.Writer()
+
 
 class DB:
     DB_STORAGE_PATH = '../db/'
@@ -141,5 +146,6 @@ class DB:
             f'SELECT * FROM {table} WHERE temp_id>? ORDER BY {col_selector}', t)
         content = selected_data.fetchall()
 
-        for content_id in content:
-            print(content_id)
+        # for content_id in content:
+
+        writer_obj.ToFile(content, table)
