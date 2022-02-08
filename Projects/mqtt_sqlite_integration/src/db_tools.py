@@ -111,3 +111,12 @@ class DB():
         conn.commit()
 
         conn.close()
+
+    def DBReadSelected(self, table_id, col_id):
+        with closing(sqlite3.connect(self.db)) as connection:
+            with closing(connection.cursor()) as cursor:
+                rows = cursor.execute(
+                    f'SELECT * FROM {self.tables[table_id]} WHERE {col_id}>20 ORDER BY TEMP').fetchall()
+                # print(rows)
+                for row in rows:
+                    print(row)
