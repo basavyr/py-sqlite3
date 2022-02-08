@@ -67,3 +67,18 @@ class DB():
 
         # close the connection
         conn.close()
+
+    def DBRead(self):
+        conn_tuple = self.CreateDBConnection()
+
+        conn = conn_tuple[0]
+        cursor = conn_tuple[1]
+
+        tables_extractor = []
+
+        for table in self.tables:
+            selector = cursor.execute(f'SELECT * FROM {table}')
+            extracted_data = selector.fetchall()
+            tables_extractor.append(extracted_data)
+
+        print(tables_extractor)
