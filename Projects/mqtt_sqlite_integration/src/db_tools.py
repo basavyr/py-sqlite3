@@ -82,3 +82,19 @@ class DB():
             tables_extractor.append(extracted_data)
 
         print(tables_extractor)
+
+    def DBWrite(self, table_id, data):
+        conn_tuple = self.CreateDBConnection()
+
+        conn = conn_tuple[0]
+        cursor = conn_tuple[1]
+
+        for data_element in data:
+            current_values = (1, data_element, 'timestamp',
+                              f'{self.tables[table_id]}/')
+            cursor.execute(
+                f'INSERT INTO {self.tables[table_id]} VALUES (?,?,?,?)', current_values)
+
+        conn.commit()
+
+        conn.close()
