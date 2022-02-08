@@ -10,16 +10,19 @@ class DB():
         """
         self.db = db_file
         self.tables = tables
-        if(len(tables)):
+        self.onlyTable = None
+        if(len(tables) == 1):
             self.onlyTable = tables[0]
 
     def CheckOneTable(self):
         if(self.onlyTable is None):
-            print('no bueno')
-            print(self.onlyTable)
+            # print('no bueno | more than one element within the table array')
+            # print(self.onlyTable)
+            return -1
         else:
-            print('bueno')
-            print(self.onlyTable)
+            # print('bueno -> only one element within the table array ')
+            # print(self.onlyTable)
+            return 1
 
     def CreateDBConnection(self):
         """
@@ -41,12 +44,26 @@ class DB():
         conn = conn_tuple[0]
         cursor = conn_tuple[1]
 
+        # if(self.CheckOneTable() == 1):
+        #     temp_table = self.onlyTable
+        # else:
+        #     temp_table = self.tables[0]
+
+        # print(temp_table)
+
         # create the initial structure of the table
         # ********************************************
-        # ******** **** Table Structure **************
+        # ************* Table Structure **************
         # ********************************************
-        cursor.execute(f'''CREATE TABLE {self.table}
-                            (temp_id int primary_key, temp float, timestamp text, topic text)''')
+        for temp_table in self.tables:
+            cursor.execute(f'''CREATE TABLE IF NOT EXISTS {temp_table}
+                                (temp_id int primary_key, temp float, timestamp text, topic text)''')
         # ********************************************
         # ********************************************
         # ********************************************
+
+        # commit/save the table creation process
+        conn.commit()
+
+        # close the connection
+        conn.close()
