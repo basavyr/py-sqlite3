@@ -1,4 +1,5 @@
 import sqlite3
+from contextlib import closing
 
 
 class DB():
@@ -37,6 +38,18 @@ class DB():
             return [-1, -1]
         else:
             return [connection, connection.cursor()]
+
+    def GetDBSize(self, table_id):
+        # get all the content within a table
+        conn_tuple = self.CreateDBConnection()
+
+        conn = conn_tuple[0]
+        cursor = conn_tuple[1]
+
+        full_data = cursor.execute(
+            f'SELECT * FROM {self.tables[table_id]}').fetchall()
+
+        print(len(full_data))
 
     def CreateTable(self):
         conn_tuple = self.CreateDBConnection()
