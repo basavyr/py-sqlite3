@@ -6,6 +6,10 @@ from contextlib import closing
 class DB:
     def __init__(self, db_file):
         self.dbFile = db_file
+        self.CreateTableRequest = 1
+        """
+        - if this is true, then the table will be created. otherwise it will skip the table creation 
+        """
 
     def CreateConnection(self):
         try:
@@ -20,7 +24,19 @@ class DB:
         conn_tuple = [connection, cursor]
         return conn_tuple
 
-    def CreateFullResource(self):
+    def DropTable(self):
+        conn_tuple = self.CreateConnection()
+
+        connection = conn_tuple[0]
+        cursor = conn_tuple[1]
+
+        cursor.execute('DROP TABLE IF EXISTS mngmtRequests')
+
+        connection.commit()
+
+        connection.close()
+
+    def CreateFullRequest(self):
         conn_tuple = self.CreateConnection()
 
         conn = conn_tuple[0]
@@ -64,3 +80,12 @@ class DB:
                 cursor.execute(
                     'INSERT INTO mngmtRequests VALUES (?,?,?,?)', data_element)
                 connection.commit()
+
+    def WriteData(self, data, write_mode):
+        with closing(sqlite3.connect(self.dbFile)) as connection:
+            with closing(connection.cursor()) as cursor:
+                if(write_mode == 'clean'):
+                    self.DropTable()
+                self.CreateTemplateRequest()
+                for data_element in data:
+                    self.WriteOnce(data_element)
