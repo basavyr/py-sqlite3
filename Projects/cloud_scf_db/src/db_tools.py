@@ -1,5 +1,7 @@
 import sqlite3
 
+from contextlib import closing
+
 
 class DB:
     def __init__(self, db_file):
@@ -45,8 +47,8 @@ class DB:
 
         # *************** database/table structure ***************
         # ********************************************************
-        cursor.execute('''CREATE TABLE mngmtRequests
-                            (req_id int primary_key, os text, lib_tools text, apps text)''')
+        cursor.execute(
+            '''CREATE TABLE IF NOT EXISTS mngmtRequests (req_id int primary_key, os text, lib_tools text, apps text)''')
         # ********************************************************
         # ********************************************************
 
@@ -55,3 +57,10 @@ class DB:
 
         # close the connection to the database
         connection.close()
+
+    def WriteOnce(self, data_element):
+        with closing(sqlite3.connect(self.dbFile)) as connection:
+            with closing(connection.cursor()) as cursor:
+                cursor.execute(
+                    'INSERT INTO mngmtRequests VALUES (?,?,?,?)', data_element)
+                connection.commit()
