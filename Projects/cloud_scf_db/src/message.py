@@ -1,10 +1,15 @@
 from datetime import datetime
 
 from random import randrange
+
 import random
 
 lib_maker = lambda n: [f'lib{idx+1}' for idx in range(n)]
 app_maker = lambda n: [f'app{idx+1}' for idx in range(n)]
+
+
+data_maker = lambda n: [str(Message.GenerateTemplateRequest())
+                        for _ in range(n)]
 
 
 class Message:
