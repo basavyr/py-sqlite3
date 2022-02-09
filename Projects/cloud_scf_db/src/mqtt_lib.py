@@ -20,8 +20,11 @@ def on_disconnect_callback(client, userdata, rc):
 
 
 def on_message_callback(client, userdata, message):
+    encoded_message = message.payload
+    decoded_message = encoded_message.decode('utf-8')
+    elements = decoded_message.strip()
     print(
-        f'Received message {message.payload} from broker on topic {message.topic}/')
+        f'Received message {elements} from broker on topic {message.topic}/')
 
 
 class MQTT_Publish:
