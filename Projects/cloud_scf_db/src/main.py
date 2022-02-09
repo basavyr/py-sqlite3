@@ -6,7 +6,8 @@ def main():
     new_db = db_tools.DB(local_db)
     data = [(1, 'macOS', 'lib_tools', 'apps'), (2, 'macOS', 'lib_tools', 'apps'),
             (3, 'macOS', 'lib_tools', 'apps'), (4, 'macOS', 'lib_tools', 'apps')]
-    new_db.WriteData(data, write_mode='clean')
+    # new_db.WriteData(data, write_mode='dirty')
+    new_db.WriteOnce(data[0])
 
 
 if __name__ == '__main__':

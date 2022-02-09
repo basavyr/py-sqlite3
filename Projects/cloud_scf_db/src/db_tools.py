@@ -2,6 +2,8 @@ import sqlite3
 
 from contextlib import closing
 
+import helper_tools
+
 
 class DB:
     def __init__(self, db_file):
@@ -52,6 +54,16 @@ class DB:
         conn.commit()
         conn.close()
 
+    def CheckValidData(self, data_element):
+        var_type0 = helper_tools.Types.isVarType(data_element[0], int)
+        var_type1 = helper_tools.Types.isVarType(data_element[1], str)
+        var_type2 = helper_tools.Types.isVarType(data_element[2], str)
+        var_type3 = helper_tools.Types.isVarType(data_element[3], str)
+        if(var_type0 and var_type1 and var_type2 and var_type3):
+            return 1
+        else:
+            return -1
+
     def CreateTemplateRequest(self):
         conn_tuple = self.CreateConnection()
 
@@ -75,11 +87,13 @@ class DB:
         connection.close()
 
     def WriteOnce(self, data_element):
-        with closing(sqlite3.connect(self.dbFile)) as connection:
-            with closing(connection.cursor()) as cursor:
-                cursor.execute(
-                    'INSERT INTO mngmtRequests VALUES (?,?,?,?)', data_element)
-                connection.commit()
+        self_check=self.CheckValidData(data_element)
+        print(self_check)
+        # with closing(sqlite3.connect(self.dbFile)) as connection:
+        #     with closing(connection.cursor()) as cursor:
+        #         cursor.execute(
+        #             'INSERT INTO mngmtRequests VALUES (?,?,?,?)', data_element)
+        #         connection.commit()
 
     def WriteData(self, data, write_mode):
         with closing(sqlite3.connect(self.dbFile)) as connection:
