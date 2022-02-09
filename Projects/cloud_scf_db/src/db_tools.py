@@ -87,15 +87,15 @@ class DB:
         connection.close()
 
     def WriteOnce(self, data_element):
-        self_check=self.CheckValidData(data_element)
+        self_check = self.CheckValidData(data_element)
         print(self_check)
-        # with closing(sqlite3.connect(self.dbFile)) as connection:
-        #     with closing(connection.cursor()) as cursor:
-        #         cursor.execute(
-        #             'INSERT INTO mngmtRequests VALUES (?,?,?,?)', data_element)
-        #         connection.commit()
+        with closing(sqlite3.connect(self.dbFile)) as connection:
+            with closing(connection.cursor()) as cursor:
+                cursor.execute(
+                    'INSERT INTO mngmtRequests VALUES (?,?,?,?)', data_element)
+                connection.commit()
 
-    def WriteData(self, data, write_mode):
+    def WriteData(self, data, write_smode):
         with closing(sqlite3.connect(self.dbFile)) as connection:
             with closing(connection.cursor()) as cursor:
                 if(write_mode == 'clean'):
@@ -103,3 +103,10 @@ class DB:
                 self.CreateTemplateRequest()
                 for data_element in data:
                     self.WriteOnce(data_element)
+
+    def GetDBSize(self):
+        with closing(sqlite3.connect(self.dbFile)) as connection:
+            with closing(connection.cursor()) as cursor:
+                db_size = len(cursor.execute(
+                    'SELECT * FROM mngmtRequests').fetchall())
+        return db_size
