@@ -38,6 +38,13 @@ class DB:
 
         connection.close()
 
+    def GetDBSize(self):
+        with closing(sqlite3.connect(self.dbFile)) as connection:
+            with closing(connection.cursor()) as cursor:
+                db_size = len(cursor.execute(
+                    'SELECT * FROM mngmtRequests').fetchall())
+        return db_size
+
     def CreateFullRequest(self):
         conn_tuple = self.CreateConnection()
 
@@ -55,11 +62,10 @@ class DB:
         conn.close()
 
     def CheckValidData(self, data_element):
-        var_type0 = helper_tools.Types.isVarType(data_element[0], int)
+        var_type0 = helper_tools.Types.isVarType(data_element[0], str)
         var_type1 = helper_tools.Types.isVarType(data_element[1], str)
         var_type2 = helper_tools.Types.isVarType(data_element[2], str)
-        var_type3 = helper_tools.Types.isVarType(data_element[3], str)
-        if(var_type0 and var_type1 and var_type2 and var_type3):
+        if(var_type0 and var_type1 and var_type2):
             return 1
         else:
             return -1
@@ -88,11 +94,14 @@ class DB:
 
     def WriteOnce(self, data_element):
         self_check = self.CheckValidData(data_element)
-        print(self_check)
+        if(self_check == -1):
+            return -1
+        final_tuple = (int(self.GetDBSize()), str(
+            data_element[0]), str(data_element[1]), str(data_element[2]))
         with closing(sqlite3.connect(self.dbFile)) as connection:
             with closing(connection.cursor()) as cursor:
                 cursor.execute(
-                    'INSERT INTO mngmtRequests VALUES (?,?,?,?)', data_element)
+                    'INSERT INTO mngmtRequests VALUES (?,?,?,?)', final_tuple)
                 connection.commit()
 
     def WriteData(self, data, write_smode):
@@ -103,10 +112,3 @@ class DB:
                 self.CreateTemplateRequest()
                 for data_element in data:
                     self.WriteOnce(data_element)
-
-    def GetDBSize(self):
-        with closing(sqlite3.connect(self.dbFile)) as connection:
-            with closing(connection.cursor()) as cursor:
-                db_size = len(cursor.execute(
-                    'SELECT * FROM mngmtRequests').fetchall())
-        return db_size
