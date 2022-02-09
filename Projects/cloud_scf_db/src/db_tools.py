@@ -65,7 +65,8 @@ class DB:
         var_type0 = helper_tools.Types.isVarType(data_element[0], str)
         var_type1 = helper_tools.Types.isVarType(data_element[1], str)
         var_type2 = helper_tools.Types.isVarType(data_element[2], str)
-        if(var_type0 and var_type1 and var_type2):
+        var_type3 = helper_tools.Types.isVarType(data_element[3], str)
+        if(var_type0 and var_type1 and var_type2 and var_type3):
             return 1
         else:
             return -1
@@ -82,7 +83,7 @@ class DB:
         # *************** database/table structure ***************
         # ********************************************************
         cursor.execute(
-            '''CREATE TABLE IF NOT EXISTS mngmtRequests (req_id int primary_key, os text, lib_tools text, apps text)''')
+            '''CREATE TABLE IF NOT EXISTS mngmtRequests (req_id int primary_key, os text, lib_tools text, apps text, timestamp text)''')
         # ********************************************************
         # ********************************************************
 
@@ -93,22 +94,25 @@ class DB:
         connection.close()
 
     def WriteOnce(self, data_element):
-        self_check = self.CheckValidData(data_element)
-        if(self_check == -1):
-            return -1
+        # self_check = self.CheckValidData(data_element)
+        # if(self_check == -1):
+        #     return -1
         final_tuple = (int(self.GetDBSize()), str(
-            data_element[0]), str(data_element[1]), str(data_element[2]))
+            data_element[0]), str(data_element[1]), str(data_element[2]), str(data_element[3]))
         with closing(sqlite3.connect(self.dbFile)) as connection:
             with closing(connection.cursor()) as cursor:
                 cursor.execute(
-                    'INSERT INTO mngmtRequests VALUES (?,?,?,?)', final_tuple)
+                    'INSERT INTO mngmtRequests VALUES (?,?,?,?,?)', final_tuple)
                 connection.commit()
 
-    def WriteData(self, data, write_smode):
+    def WriteData(self, data, write_mode):
         with closing(sqlite3.connect(self.dbFile)) as connection:
             with closing(connection.cursor()) as cursor:
                 if(write_mode == 'clean'):
                     self.DropTable()
                 self.CreateTemplateRequest()
                 for data_element in data:
-                    self.WriteOnce(data_element)
+                    if(self.CheckValidData(data_element)):
+                        self.WriteOnce(data_element)
+                    else:
+                        pass
