@@ -116,3 +116,16 @@ class DB:
                         self.WriteOnce(data_element)
                     else:
                         pass
+
+    def ReadDB(self, dump_file, to_file):
+        conn_tuple = self.CreateConnection()
+
+        connection = conn_tuple[0]
+        cursor = conn_tuple[1]
+
+        all_data = cursor.execute('SELECT * FROM mngmtRequests').fetchall()
+        if(to_file == 1):
+            helper_tools.File.WriteToFile(dump_file, all_data)
+        else:
+            for data in all_data:
+                print(data)

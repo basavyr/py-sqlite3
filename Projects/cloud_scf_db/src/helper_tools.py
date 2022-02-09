@@ -23,7 +23,7 @@ class File:
         else:
             with open(file, 'w+') as writer:
                 for data_element in data:
-                    writer.write(data_element)
+                    writer.write(str(data_element))
                     writer.write('\n')
 
     @staticmethod
