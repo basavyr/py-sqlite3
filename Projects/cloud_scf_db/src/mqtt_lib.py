@@ -23,8 +23,10 @@ def on_message_callback(client, userdata, message):
     encoded_message = message.payload
     decoded_message = encoded_message.decode('utf-8')
     elements = decoded_message.strip()
-    print(
-        f'Received message {elements} from broker on topic {message.topic}/')
+    # print(elements[elements.find(','):elements.find('[') - 2])
+    print(elements[2:4])
+    # print(
+    #     f'Received message {decoded_message} from broker on topic {message.topic}/')
 
 
 class MQTT_Publish:
