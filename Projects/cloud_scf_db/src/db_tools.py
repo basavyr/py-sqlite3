@@ -4,6 +4,7 @@ from contextlib import closing
 
 import helper_tools
 
+import constantParams as params
 
 class DB:
     def __init__(self, db_file):
