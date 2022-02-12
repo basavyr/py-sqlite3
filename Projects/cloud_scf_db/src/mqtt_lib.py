@@ -4,6 +4,8 @@ import paho.mqtt.publish as publisher
 
 import helper_tools
 
+import constantParams as params
+
 import time
 
 
@@ -50,7 +52,7 @@ class MQTT_Publish:
         """
         temp_client = self.CreateClient()
 
-        temp_client.connect_async(host='broker.hivemq.com')
+        temp_client.connect_async(host=params.TOPIC)
 
        # ******************************* #
         temp_client.loop_start()
@@ -86,7 +88,7 @@ class MQTT_Subscribe:
     def Subscribe(self):
         temp_client = self.CreateClient()
 
-        temp_client.connect(host='broker.hivemq.com')
+        temp_client.connect(host=params.BROKER)
 
         temp_client.subscribe(topic=self.topic)
 
