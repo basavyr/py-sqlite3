@@ -1,6 +1,8 @@
 import paho.mqtt.client as mqtt
 import time
 
+# run pipenv shell for executing python module with the paho package
+
 host0 = 'broker.hivemq.com'
 
 
