@@ -1,9 +1,15 @@
 import paho.mqtt.client as mqtt
 import time
+import asyncio
 
 # run pipenv shell for executing python module with the paho package
 
 host0 = 'broker.hivemq.com'
+
+
+async def printNumber(number):
+    await asyncio.sleep(2)
+    print(number)
 
 
 def main():
@@ -24,4 +30,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    number=33
+    printNumber(number)
+    print(f' non async ->{number}')
