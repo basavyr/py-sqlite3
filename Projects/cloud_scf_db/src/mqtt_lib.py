@@ -6,6 +6,8 @@ import helper_tools
 
 import time
 
+import message as msg
+
 
 def on_publish_callback(client, userdata, mid):
     print(f'Published to the broker with mid -> {mid}')
@@ -58,8 +60,10 @@ class MQTT_Publish:
         for message in message_list:
             if(verbose == 1):
                 print(message)
-            temp_client.publish(self.topic, message)
-            time.sleep(2)
+            dm = msg.stringify(message)
+            # publish the message as a pure string
+            temp_client.publish(self.topic, dm)
+            time.sleep(1)
 
         temp_client.loop_stop()
        # ******************************* #
