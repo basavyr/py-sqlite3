@@ -46,9 +46,11 @@ class MQTT_Publish:
 
         return temp_client
 
-    def PublishMessages_Async(self, message_list, verbose):
+    def PublishMessages_Async(self, message_list, break_amount, verbose):
         """
         - use a custom connection with an arbitrary loop to publish messages to a broker
+        - the client connects to the broker asynchronously, non-blocking operation
+        - the data is published within a timed window (break_amount variable gives the time between two concurrent published messages)
         """
         temp_client = self.CreateClient()
 
@@ -60,10 +62,11 @@ class MQTT_Publish:
         for message in message_list:
             if(verbose == 1):
                 print(message)
+            # generate a pure string from the initial message
             dm = msg.stringify(message)
             # publish the message as a pure string
             temp_client.publish(self.topic, dm)
-            time.sleep(1)
+            time.sleep(break_amount)
 
         temp_client.loop_stop()
        # ******************************* #

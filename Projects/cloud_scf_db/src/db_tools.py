@@ -112,9 +112,11 @@ class DB:
                     self.DropTable()
                 self.CreateTemplateRequest()
                 for data_element in data:
-                    if(self.CheckValidData(data_element)):
+                    if(self.CheckValidData(data_element) == 1):
                         self.WriteOnce(data_element)
                     else:
+                        print(
+                            'Cannot write data to the db since it has an invalid format')
                         pass
 
     def ReadDB(self, dump_file, to_file):

@@ -15,7 +15,7 @@ def main():
     new_db = db_tools.DB(local_db)
 
     # the clean flag for write_mode argument means that the table within the database must be empty before adding data to it
-    new_db.WriteData(data, write_mode='dirty')
+    new_db.WriteData(data, write_mode='clean')
     # the to_file flag tells that the read information within the database should be dumped into an external file
     new_db.ReadDB(dump_file, to_file=1)
     # check the database with a certain OS value
