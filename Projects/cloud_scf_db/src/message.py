@@ -29,8 +29,8 @@ class Message:
         """
         os_list = ['macOS', 'linux', 'Windows']
         os = random.choice(os_list)
-        n_libs = randrange(1, 5)
-        n_apps = randrange(1, 5)
+        n_libs = randrange(1, 10)
+        n_apps = randrange(1, 10)
         lib_tools = lib_maker(n_libs)
         apps = app_maker(n_apps)
         timestamp = str(datetime.utcnow())

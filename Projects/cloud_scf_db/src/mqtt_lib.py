@@ -8,6 +8,8 @@ import time
 
 import message as msg
 
+import asyncio
+
 
 def on_publish_callback(client, userdata, mid):
     print(f'Published to the broker with mid -> {mid}')
@@ -24,11 +26,11 @@ def on_disconnect_callback(client, userdata, rc):
 def on_message_callback(client, userdata, message):
     encoded_message = message.payload
     decoded_message = encoded_message.decode('utf-8')
-    elements = decoded_message.strip()
+    # elements = decoded_message.strip()
     # print(elements[elements.find(','):elements.find('[') - 2])
-    print(elements[2:4])
-    # print(
-    #     f'Received message {decoded_message} from broker on topic {message.topic}/')
+    # print(elements[2:4])
+    print(
+        f'Received message {decoded_message} from broker on topic {message.topic}/')
 
 
 class MQTT_Publish:
@@ -48,7 +50,7 @@ class MQTT_Publish:
 
         return temp_client
 
-    def PublishMessages_Async(self, message_list, break_amount, verbose):
+    async def PublishMessages_Async(self, message_list, break_amount, verbose):
         """
         - use a custom connection with an arbitrary loop to publish messages to a broker
         - the client connects to the broker asynchronously, non-blocking operation
@@ -64,14 +66,17 @@ class MQTT_Publish:
         for message in message_list:
             if(verbose == 1):
                 print(f'Generated message -> {message}')
+
             # generate a pure string from the initial message
             dm = msg.stringify(message)
+
             # publish the message as a pure string
             temp_client.publish(self.topic, dm)
+
             if(verbose == 1):
                 print(
                     f'Published message on topic {self.topic} via broker {MQTT_Publish.HOST}')
-            time.sleep(break_amount)
+            await asyncio.sleep(break_amount)
 
         temp_client.loop_stop()
        # ******************************* #
@@ -96,7 +101,7 @@ class MQTT_Subscribe:
 
         return temp_client
 
-    def Subscribe(self, break_amount):
+    async def Subscribe(self, break_amount, verbose):
         """
         - create a client that will subscribe to a topic
         - client will connect to the broker which listens to any incoming messages for that particular topic
@@ -104,15 +109,20 @@ class MQTT_Subscribe:
 
         temp_client = self.CreateClient()
 
-        temp_client.connect_async(host=MQTT_Subscribe.HOST)
+        # doesn't work on async connection to the broker
+        temp_client.connect(host=MQTT_Subscribe.HOST)
 
         temp_client.subscribe(topic=self.topic)
 
-        # generate a non blocking way of connecting to the broker and establishing the connection loop
-        print('Starting the subscription loop...')
+        # # generate a non blocking way of connecting to the broker and establishing the connection loop
+        if(verbose == 1):
+            print('Starting the subscription loop...')
         temp_client.loop_start()
 
-        time.sleep(break_amount)
+        await asyncio.sleep(break_amount)
 
-        print('Stopping the subscription loop...')
+        if(verbose == 1):
+            print('Stopping the subscription loop...')
         temp_client.loop_stop()
+
+        temp_client.disconnect()
