@@ -32,6 +32,8 @@ def on_message_callback(client, userdata, message):
 
 
 class MQTT_Publish:
+    HOST = 'broker.hivemq.com'
+
     def __init__(self, client_name, topic):
         self.client = client_name
         self.topic = topic
@@ -54,18 +56,21 @@ class MQTT_Publish:
         """
         temp_client = self.CreateClient()
 
-        temp_client.connect_async(host='broker.hivemq.com')
+        temp_client.connect_async(host=MQTT_Publish.HOST)
 
        # ******************************* #
         temp_client.loop_start()
 
         for message in message_list:
             if(verbose == 1):
-                print(message)
+                print(f'Generated message -> {message}')
             # generate a pure string from the initial message
             dm = msg.stringify(message)
             # publish the message as a pure string
             temp_client.publish(self.topic, dm)
+            if(verbose == 1):
+                print(
+                    f'Published message on topic {self.topic} via broker {MQTT_Publish.HOST}')
             time.sleep(break_amount)
 
         temp_client.loop_stop()
@@ -75,6 +80,8 @@ class MQTT_Publish:
 
 
 class MQTT_Subscribe:
+    HOST = 'broker.hivemq.com'
+
     def __init__(self, client_name, topic):
         self.client = client_name
         self.topic = topic
@@ -84,17 +91,28 @@ class MQTT_Subscribe:
 
         # set additional callbacks for the client
         temp_client.on_connect = on_connect_callback
-        temp_client.on_publish = on_publish_callback
         temp_client.on_disconnect = on_disconnect_callback
         temp_client.on_message = on_message_callback
 
         return temp_client
 
-    def Subscribe(self):
+    def Subscribe(self, break_amount):
+        """
+        - create a client that will subscribe to a topic
+        - client will connect to the broker which listens to any incoming messages for that particular topic
+        """
+
         temp_client = self.CreateClient()
 
-        temp_client.connect(host='broker.hivemq.com')
+        temp_client.connect_async(host=MQTT_Subscribe.HOST)
 
         temp_client.subscribe(topic=self.topic)
 
-        temp_client.loop_forever()
+        # generate a non blocking way of connecting to the broker and establishing the connection loop
+        print('Starting the subscription loop...')
+        temp_client.loop_start()
+
+        time.sleep(break_amount)
+
+        print('Stopping the subscription loop...')
+        temp_client.loop_stop()

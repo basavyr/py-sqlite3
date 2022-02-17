@@ -72,6 +72,12 @@ class DB:
             return -1
 
     def CreateTemplateRequest(self):
+        """
+        - create the table in which every message will be saved
+        - table is created after
+            1. a connection to the db is established
+            2. cursor object is generated (allowing executing the create command)
+        """
         conn_tuple = self.CreateConnection()
 
         connection = conn_tuple[0]
