@@ -18,6 +18,8 @@ def main():
     new_db.WriteData(data, write_mode='dirty')
     # the to_file flag tells that the read information within the database should be dumped into an external file
     new_db.ReadDB(dump_file, to_file=1)
+    # check the database with a certain OS value
+    new_db.SelectByOS('macOS')
 
     # mqtt_sub = mqtt_lib.MQTT_Subscribe('subscriber', 'mngmtRequests')
     # mqtt_sub.Subscribe()

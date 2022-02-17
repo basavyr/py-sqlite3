@@ -129,3 +129,16 @@ class DB:
         else:
             for data in all_data:
                 print(data)
+
+    def SelectByOS(self, os):
+        conn_tuple = self.CreateConnection()
+
+        connection = conn_tuple[0]
+        cursor = conn_tuple[1]
+
+        os_tuple = (os,)
+        cursor.execute('SELECT * FROM mngmtRequests WHERE os=?', os_tuple)
+        data = cursor.fetchall()
+
+        for data_element in data:
+            print(data_element)
