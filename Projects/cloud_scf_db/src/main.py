@@ -4,15 +4,12 @@ import message
 
 import mqtt_lib
 
-import asyncio
-
-import publisher_service
-import subscriber_service
+import constantParams as params
 
 
-def writeDatabase():
-    local_db = '../db/management_requests.db'
-    dump_file = '../db/exported_db.dat'
+def main():
+    db_file = params.LOCAL_DATABASE
+    dump_file = params.LOCAL_DUMPFILE
 
     # create the database object that will be used for created databases and tables
     new_db = db_tools.DB(local_db)
@@ -28,6 +25,8 @@ def writeDatabase():
     # check the database with a certain OS value
     # new_db.SelectByOS('macOS')
 
+    mqtt_sub = mqtt_lib.MQTT_Subscribe(params.SUBSCRIBER, params.TOPIC)
+    mqtt_sub.Subscribe()
 
 async def main():
     data_size = 100

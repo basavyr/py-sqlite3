@@ -4,6 +4,8 @@ import paho.mqtt.publish as publisher
 
 import helper_tools
 
+import constantParams as params
+
 import time
 
 import message as msg
@@ -58,7 +60,7 @@ class MQTT_Publish:
         """
         temp_client = self.CreateClient()
 
-        temp_client.connect_async(host=MQTT_Publish.HOST)
+        temp_client.connect_async(host=params.TOPIC)
 
        # ******************************* #
         temp_client.loop_start()
@@ -109,8 +111,7 @@ class MQTT_Subscribe:
 
         temp_client = self.CreateClient()
 
-        # doesn't work on async connection to the broker
-        temp_client.connect(host=MQTT_Subscribe.HOST)
+        temp_client.connect(host=params.BROKER)
 
         temp_client.subscribe(topic=self.topic)
 
